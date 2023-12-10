@@ -15,15 +15,23 @@
  *  along with this code.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+#ifndef DEVICEFUNCTIONS_H
+#define DEVICEFUNCTIONS_H
+
 #include <Arduino.h>
-#include "DeviceFunctions.h"
+#include "IRSensor.h"
 
-void setup() {
-  disableJTAG();
-  Serial.begin(115200);
-  Serial.println(F("Encoded IR Sensor"));
-}
+struct SensorPin {
+  int transmitPin;
+  int receivePin;
+  bool beamBreak;
+};
 
-void loop() {
+extern constexpr int SENSOR_COUNT=14;
+extern SensorPin sensorPins[SENSOR_COUNT];
+extern IRSensor sensors[SENSOR_COUNT];
 
-}
+void disableJTAG();
+void setupSensors();
+
+#endif
