@@ -20,6 +20,23 @@
 
 // IRSensor class public methods
 
+IRSensor::IRSensor(int transmitPin, int receivePin, void (*activationCallback)(), void (*deactivationCallback)(), bool beamBreak)
+: _transmitPin(transmitPin), _receivePin(receivePin), _activationCallback(activationCallback), _deactivationCallback(deactivationCallback), _beamBreak(beamBreak) {}
+
+void IRSensor::begin() {
+  pinMode(_transmitPin, OUTPUT);
+  pinMode(_receivePin, INPUT);
+
+  // _attachInterrupt();
+}
+
+
+
+void IRSensor::_sensorInterruptHandler() {
+  
+}
+
+/*
 IRSensor::IRSensor(int transmitPin, int receivePin, int message, bool beamBreak, int threshold)
   : _transmitPin(transmitPin), _receivePin(receivePin), _message(message), _beamBreak(beamBreak), _threshold(threshold), _receivedMessage(0) {
     // Initialise the sensor
@@ -88,3 +105,4 @@ void IRSensor::_processReceivedData(uint32_t duration) {
 int IRSensor::_decodeData(uint32_t duration) {
   return (duration>_threshold) ? 1 : 0;
 }
+*/

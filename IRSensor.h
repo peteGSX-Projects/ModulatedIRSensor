@@ -23,6 +23,34 @@
 class IRSensor {
 public:
   /// @brief Constructor for a sensor object
+  /// @param transmitPin Pin for the IR transmitter
+  /// @param receivePin Pin for the IR phototransistor
+  /// @param activationCallback Function to call when sensor pair is activated
+  /// @param deactivationCallback Function to call when sensor pair is deactivated
+  /// @param beamBreak Set to true when transmitter/phototransistor face each other (defaul false)
+  IRSensor(int transmitPin, int receivePin, void (*activationCallback)()=nullptr, void (*deactivationCallback)()=nullptr, bool beamBreak=false);
+
+  /// @brief Initiate sensor monitoring, sets pin modes and attaches to the interrupt handler
+  void begin();
+
+
+private:
+  int _transmitPin;
+  int _receivePin;
+  void (*_activationCallback)();
+  void (*_deactivationCallback)();
+  bool _beamBreak;
+
+  static void _sensorInterruptHandler();
+
+  static IRSensor* _instance;
+
+};
+
+/*
+class IRSensor {
+public:
+  /// @brief Constructor for a sensor object
   /// @param transmitPin Pin to use for transmitting the encoded message
   /// @param receivePin Pin to use for receiving the encoded message
   /// @param message Integer to use as the encoded message to send
@@ -54,5 +82,6 @@ private:
   int _decodeData(uint32_t duration);
 
 };
+*/
 
 #endif

@@ -27,7 +27,7 @@ struct SensorPin {
   bool beamBreak;
 };
 
-extern constexpr int SENSOR_COUNT=14;
+#define SENSOR_COUNT 14
 extern SensorPin sensorPins[SENSOR_COUNT];
 extern IRSensor sensors[SENSOR_COUNT];
 

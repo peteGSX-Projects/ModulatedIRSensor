@@ -22,10 +22,15 @@ void setup() {
   disableJTAG();
   Serial.begin(115200);
   Serial.println(F("Encoded IR Sensor"));
+  // pinMode(irReceiverPin, INPUT);
 }
 
 void loop() {
-
+  // bool newState = digitalRead(irReceiverPin);
+  // if (newState != receivedState) {
+  //   Serial.println(newState);
+  //   receivedState = newState;
+  // }
 }
 
 /* ORIGINAL CODE HERE
