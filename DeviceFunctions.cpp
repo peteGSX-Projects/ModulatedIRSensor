@@ -18,24 +18,24 @@
 #include <Arduino.h>
 #include "DeviceFunctions.h"
 
-/// @brief Pins to use for the IR sensors in this format:
+/// @brief Configuration of the IR sensors in this format:
 ///        {transmitPin, receivePin, beamBreak}
 ///        Set beamBreak to true if the transmitter and receiver are facing each other in a beam break configuration
-SensorPin sensorPins[SENSOR_COUNT]={
-  {PC13,PC14,false},
-  {PC15,PA0,false},
-  {PA1,PA2,false},
-  {PA3,PA4,false},
-  {PA5,PA6,false},
-  {PA7,PB0,false},
-  {PB1,PB10,false},
-  {PB11,PB9,false},
-  {PB8,PB5,false},
-  {PB4,PB3,false},
-  {PA15,PA10,false},
-  {PA9,PA8,false},
-  {PB15,PB14,false},
-  {PB13,PB12,false},
+SensorConfig sensorConfigs[SENSOR_COUNT]={
+  {PC13,PC14,100,false},
+  {PC15,PA0,101,false},
+  // {PA1,PA2,false},
+  // {PA3,PA4,false},
+  // {PA5,PA6,false},
+  // {PA7,PB0,false},
+  // {PB1,PB10,false},
+  // {PB11,PB9,false},
+  // {PB8,PB5,false},
+  // {PB4,PB3,false},
+  // {PA15,PA10,false},
+  // {PA9,PA8,false},
+  // {PB15,PB14,false},
+  // {PB13,PB12,false},
 };
 
 void disableJTAG() {
@@ -46,8 +46,25 @@ void disableJTAG() {
   // AFIO->MAPR2 &= ~(AFIO_MAPR2_SWJ_CFG);
 }
 
-void setupSensors() {
-  // for (int i=0; i<sensorCount; i++) {
+IRSensor* sensors[SENSOR_COUNT];
 
-  // }
+void setupSensors() {
+  for (int i=0; i<SENSOR_COUNT; i++) {
+    sensors[i]=new IRSensor(i, sensorConfigs[i].transmitPin, sensorConfigs[i].receivePin, sensorConfigs[i].beamBreak);
+    sensors[i]->setActivateCallback(onActivate);
+    sensors[i]->setDeactivateCallback(onDeactivate);
+    sensors[i]->begin();
+  }
+}
+
+void onActivate(int id) {
+  Serial.print(F("Sensor "));
+  Serial.print(id);
+  Serial.println(F(" activated"));
+}
+
+void onDeactivate(int id) {
+  Serial.print(F("Sensor "));
+  Serial.print(id);
+  Serial.println(F(" deactivated"));
 }

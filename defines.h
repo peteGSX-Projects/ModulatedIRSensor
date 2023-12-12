@@ -15,26 +15,11 @@
  *  along with this code.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef DEVICEFUNCTIONS_H
-#define DEVICEFUNCTIONS_H
+#ifndef DEFINES_H
+#define DEFINES_H
 
-#include <Arduino.h>
-#include "defines.h"
-#include "IRSensor.h"
-
-struct SensorConfig {
-  int transmitPin;
-  int receivePin;
-  int message;
-  bool beamBreak;
-};
-
-extern SensorConfig sensorConfigs[SENSOR_COUNT];
-extern IRSensor* sensors[SENSOR_COUNT];
-
-void disableJTAG();
-void setupSensors();
-void onActivate(int id);
-void onDeactivate(int id);
+#ifndef SENSOR_COUNT
+#define SENSOR_COUNT 2
+#endif
 
 #endif

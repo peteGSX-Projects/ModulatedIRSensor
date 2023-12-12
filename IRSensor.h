@@ -15,73 +15,51 @@
  *  along with this code.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+/*
+*   Using cheap AliExpress IR sensors
+*   These sensors set an input pin low when activated in reflection mode
+*   In beam break mode, therefore, they will set an input pin high when activated
+*/
+
 #ifndef IRSENSOR_H
 #define IRSENSOR_H
 
 #include <Arduino.h>
+#include "defines.h"
 
 class IRSensor {
 public:
   /// @brief Constructor for a sensor object
   /// @param transmitPin Pin for the IR transmitter
   /// @param receivePin Pin for the IR phototransistor
-  /// @param activationCallback Function to call when sensor pair is activated
-  /// @param deactivationCallback Function to call when sensor pair is deactivated
+  /// @param message Numeric message to transmit and validate has been received in order to activate
   /// @param beamBreak Set to true when transmitter/phototransistor face each other (defaul false)
-  IRSensor(int transmitPin, int receivePin, void (*activationCallback)()=nullptr, void (*deactivationCallback)()=nullptr, bool beamBreak=false);
+  IRSensor(int id, int transmitPin, int receivePin, int message, bool beamBreak=false);
 
+  /// @brief Set function to call when sensor activated
+  /// @param callback Function to call
+  void setActivateCallback(void (*callback)(int id));
+
+  /// @brief Set function to call when sensor deactivated
+  /// @param callback Function to call
+  void setDeactivateCallback(void (*callback)(int id));
+  
   /// @brief Initiate sensor monitoring, sets pin modes and attaches to the interrupt handler
   void begin();
 
+  /// @brief Routinely check each sensor pair to see if they have been activated
+  void check();
 
 private:
-  int _transmitPin;
-  int _receivePin;
-  void (*_activationCallback)();
-  void (*_deactivationCallback)();
-  bool _beamBreak;
-
-  static void _sensorInterruptHandler();
-
-  static IRSensor* _instance;
-
-};
-
-/*
-class IRSensor {
-public:
-  /// @brief Constructor for a sensor object
-  /// @param transmitPin Pin to use for transmitting the encoded message
-  /// @param receivePin Pin to use for receiving the encoded message
-  /// @param message Integer to use as the encoded message to send
-  /// @param beamBreak (Optional) Set to true if the transmit/receive pair are in a beam break configuration rather than reflection
-  IRSensor(int transmitPin, int receivePin, int message, bool beamBreak=false, int threshold=1000);
-
-  /// @brief Transmit the encoded message
-  void transmitMessage();
-
-private:
+  int _id;
   int _transmitPin;
   int _receivePin;
   int _message;
   bool _beamBreak;
-  unsigned long _threshold;
-  volatile int _receivedMessage;
-
-  /// @brief Interrupt handler for sensors
-  /// @param context The sensor instance that needs handling
-  static void _sensorInterruptHandler(void* context);
-
-  /// @brief Process the received data
-  /// @param duration Length of received pulse
-  void _processReceivedData(uint32_t duration);
-
-  /// @brief Decode the actual received message based on pulse duration
-  /// @param duration Duration of the pulse received
-  /// @return Message to return
-  int _decodeData(uint32_t duration);
+  bool _activated;
+  void (*_activationCallback)(int id);
+  void (*_deactivationCallback)(int id);
 
 };
-*/
 
 #endif
