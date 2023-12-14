@@ -22,8 +22,10 @@
 const int txPin=PC13;
 const int rxPin=PC14;
 
+unsigned long lastTxTime=0;
 unsigned long lastRxTime=0;
-unsigned long waveDelay=1000000;
+unsigned long waveDelay=10000;
+unsigned long responseDelay=20;   // Allow for slow phototransistor response to trasnmitter changes
 bool received=false;
 
 const int windowSize=10;
@@ -45,6 +47,7 @@ void setup() {
 
   pinMode(txPin, OUTPUT);
   pinMode(rxPin, INPUT);
+  digitalWrite(txPin, txState);
 }
 
 void loop() {
@@ -54,35 +57,39 @@ void loop() {
 
   unsigned long currentMicros=micros();
 
-  if (currentMicros-lastRxTime>waveDelay) {
-    lastRxTime=currentMicros;
-    // txState=!txState;
+  if (currentMicros-lastTxTime>waveDelay) {
+    lastTxTime=currentMicros;
+    txState=!txState;
     digitalWrite(txPin, txState);
+  }
+
+  if (currentMicros-lastRxTime>responseDelay) {
+    lastRxTime=lastTxTime+responseDelay;
     bool rxState=digitalRead(rxPin);
-    // bool isActive=(activeState) ? rxState : !rxState;
-    // bool matchesTx=(isActive==txState);
-    // window[windowIndex]=(isActive==txState);
-    Serial.print(F("txState|rxState|isActive|matchesTx: "));
-    Serial.print(txState);
-    Serial.print(F("|"));
-    Serial.println(rxState);
+    bool isActive=(activeState) ? rxState : !rxState;
+    bool matchesTx=(isActive==txState);
+    window[windowIndex]=(isActive==txState);
+    // Serial.print(F("txState|rxState|isActive|matchesTx: "));
+    // Serial.print(txState);
+    // Serial.print(F("|"));
+    // Serial.print(rxState);
     // Serial.print(F("|"));
     // Serial.print(isActive);
     // Serial.print(F("|"));
     // Serial.println(matchesTx);
-    // windowIndex=(windowIndex+1) % windowSize;
+    windowIndex=(windowIndex+1) % windowSize;
   }
 
-  // received=true;
-  // for (int i=0; i< windowSize; i++) {
-  //   if (!window[i]) {
-  //     received=false;
-  //     break;
-  //   }
-  // }
+  received=true;
+  for (int i=0; i< windowSize; i++) {
+    if (!window[i]) {
+      received=false;
+      break;
+    }
+  }
 
-  // if (received) {
-  //   Serial.println("Activated");
-  //   onActivate(0);
-  // }
+  if (received) {
+    Serial.println("Activated");
+    onActivate(0);
+  }
 }
