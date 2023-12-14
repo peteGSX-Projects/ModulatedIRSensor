@@ -16,17 +16,73 @@
 */
 
 #include <Arduino.h>
+#include "version.h"
 #include "DeviceFunctions.h"
+
+const int txPin=PC13;
+const int rxPin=PC14;
+
+unsigned long lastRxTime=0;
+unsigned long waveDelay=1000000;
+bool received=false;
+
+const int windowSize=10;
+bool window[windowSize];
+int windowIndex=0;
+
+bool txState=true;
+
+bool activeState=false;
 
 void setup() {
   disableJTAG();
   Serial.begin(115200);
+  delay(5000);
   Serial.println(F("Encoded IR Sensor"));
-  setupSensors();
+  Serial.print(F("Version: "));
+  Serial.println(VERSION);
+  // setupSensors();
+
+  pinMode(txPin, OUTPUT);
+  pinMode(rxPin, INPUT);
 }
 
 void loop() {
-  for (int i=0; i<SENSOR_COUNT; i++) {
-    sensors[i]->check();
+  // for (int i=0; i<SENSOR_COUNT; i++) {
+  //   sensors[i]->check();
+  // }
+
+  unsigned long currentMicros=micros();
+
+  if (currentMicros-lastRxTime>waveDelay) {
+    lastRxTime=currentMicros;
+    // txState=!txState;
+    digitalWrite(txPin, txState);
+    bool rxState=digitalRead(rxPin);
+    // bool isActive=(activeState) ? rxState : !rxState;
+    // bool matchesTx=(isActive==txState);
+    // window[windowIndex]=(isActive==txState);
+    Serial.print(F("txState|rxState|isActive|matchesTx: "));
+    Serial.print(txState);
+    Serial.print(F("|"));
+    Serial.println(rxState);
+    // Serial.print(F("|"));
+    // Serial.print(isActive);
+    // Serial.print(F("|"));
+    // Serial.println(matchesTx);
+    // windowIndex=(windowIndex+1) % windowSize;
   }
+
+  // received=true;
+  // for (int i=0; i< windowSize; i++) {
+  //   if (!window[i]) {
+  //     received=false;
+  //     break;
+  //   }
+  // }
+
+  // if (received) {
+  //   Serial.println("Activated");
+  //   onActivate(0);
+  // }
 }
