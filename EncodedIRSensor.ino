@@ -24,8 +24,8 @@ const int rxPin=PC14;
 
 unsigned long lastTxTime=0;
 unsigned long lastRxTime=0;
-unsigned long waveDelay=10000;
-unsigned long responseDelay=20;   // Allow for slow phototransistor response to trasnmitter changes
+unsigned long waveDelay=1000;
+unsigned long responseDelay=1020;   // Allow for slow phototransistor response to trasnmitter changes
 bool received=false;
 
 const int windowSize=10;
@@ -64,19 +64,10 @@ void loop() {
   }
 
   if (currentMicros-lastRxTime>responseDelay) {
-    lastRxTime=lastTxTime+responseDelay;
+    lastRxTime=lastRxTime=currentMicros;
     bool rxState=digitalRead(rxPin);
     bool isActive=(activeState) ? rxState : !rxState;
-    bool matchesTx=(isActive==txState);
     window[windowIndex]=(isActive==txState);
-    // Serial.print(F("txState|rxState|isActive|matchesTx: "));
-    // Serial.print(txState);
-    // Serial.print(F("|"));
-    // Serial.print(rxState);
-    // Serial.print(F("|"));
-    // Serial.print(isActive);
-    // Serial.print(F("|"));
-    // Serial.println(matchesTx);
     windowIndex=(windowIndex+1) % windowSize;
   }
 
@@ -89,7 +80,6 @@ void loop() {
   }
 
   if (received) {
-    Serial.println("Activated");
     onActivate(0);
   }
 }

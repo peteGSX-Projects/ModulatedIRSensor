@@ -20,10 +20,17 @@
 
 // IRSensor class public methods
 
-IRSensor::IRSensor(int id, int transmitPin, int receivePin, int message, bool beamBreak)
-: _id(id), _transmitPin(transmitPin), _receivePin(receivePin), _message(message),
-  _beamBreak(beamBreak), _activated(false),
-  _activationCallback(nullptr), _deactivationCallback(nullptr) {}
+IRSensor::IRSensor(int id, int transmitPin, int receivePin, bool beamBreak)
+: _id(id), _transmitPin(transmitPin), _receivePin(receivePin), _beamBreak(beamBreak) {
+  _lastTxTime=0;
+  _lastRxTime=0;
+  _txDelay=1000;
+  _rxDelay=1020;
+  _windowIndex=0;
+  _txState=true;
+  _activationCallback=nullptr;
+  _deactivationCallback=nullptr;
+}
 
 void IRSensor::setActivateCallback(void (*callback)(int id)) {
   _activationCallback=callback;
@@ -36,7 +43,7 @@ void IRSensor::setDeactivateCallback(void (*callback)(int id)) {
 void IRSensor::begin() {
   pinMode(_transmitPin, OUTPUT);
   pinMode(_receivePin, INPUT);
-  digitalWrite(_transmitPin, HIGH);
+  digitalWrite(_transmitPin, _txState);
 }
 
 void IRSensor::check() {
