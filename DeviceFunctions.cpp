@@ -22,8 +22,8 @@
 ///        {transmitPin, receivePin, beamBreak}
 ///        Set beamBreak to true if the transmitter and receiver are facing each other in a beam break configuration
 SensorConfig sensorConfigs[SENSOR_COUNT]={
-  {PC13,PC14,100,false},
-  {PC15,PA0,101,false},
+  {PC13,PC14,false},
+  {PC15,PA0,false},
   // {PA1,PA2,false},
   // {PA3,PA4,false},
   // {PA5,PA6,false},

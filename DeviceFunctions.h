@@ -25,7 +25,6 @@
 struct SensorConfig {
   int transmitPin;
   int receivePin;
-  int message;
   bool beamBreak;
 };
 

@@ -19,22 +19,22 @@
 #include "version.h"
 #include "DeviceFunctions.h"
 
-const int txPin=PC13;
-const int rxPin=PC14;
+// const int txPin=PC13;
+// const int rxPin=PC14;
 
-unsigned long lastTxTime=0;
-unsigned long lastRxTime=0;
-unsigned long waveDelay=1000;
-unsigned long responseDelay=1020;   // Allow for slow phototransistor response to trasnmitter changes
-bool received=false;
+// unsigned long lastTxTime=0;
+// unsigned long lastRxTime=0;
+// unsigned long waveDelay=1000;
+// unsigned long responseDelay=1020;   // Allow for slow phototransistor response to trasnmitter changes
+// bool received=false;
 
-const int windowSize=10;
-bool window[windowSize];
-int windowIndex=0;
+// const int windowSize=10;
+// bool window[windowSize];
+// int windowIndex=0;
 
-bool txState=true;
+// bool txState=true;
 
-bool activeState=false;
+// bool activeState=false;
 
 void setup() {
   disableJTAG();
@@ -43,43 +43,43 @@ void setup() {
   Serial.println(F("Encoded IR Sensor"));
   Serial.print(F("Version: "));
   Serial.println(VERSION);
-  // setupSensors();
+  setupSensors();
 
-  pinMode(txPin, OUTPUT);
-  pinMode(rxPin, INPUT);
-  digitalWrite(txPin, txState);
+  // pinMode(txPin, OUTPUT);
+  // pinMode(rxPin, INPUT);
+  // digitalWrite(txPin, txState);
 }
 
 void loop() {
-  // for (int i=0; i<SENSOR_COUNT; i++) {
-  //   sensors[i]->check();
+  for (int i=0; i<SENSOR_COUNT; i++) {
+    sensors[i]->check();
+  }
+
+  // unsigned long currentMicros=micros();
+
+  // if (currentMicros-lastTxTime>waveDelay) {
+  //   lastTxTime=currentMicros;
+  //   txState=!txState;
+  //   digitalWrite(txPin, txState);
   // }
 
-  unsigned long currentMicros=micros();
+  // if (currentMicros-lastRxTime>responseDelay) {
+  //   lastRxTime=currentMicros;
+  //   bool rxState=digitalRead(rxPin);
+  //   bool isActive=(activeState) ? rxState : !rxState;
+  //   window[windowIndex]=(isActive==txState);
+  //   windowIndex=(windowIndex+1) % windowSize;
+  // }
 
-  if (currentMicros-lastTxTime>waveDelay) {
-    lastTxTime=currentMicros;
-    txState=!txState;
-    digitalWrite(txPin, txState);
-  }
+  // received=true;
+  // for (int i=0; i< windowSize; i++) {
+  //   if (!window[i]) {
+  //     received=false;
+  //     break;
+  //   }
+  // }
 
-  if (currentMicros-lastRxTime>responseDelay) {
-    lastRxTime=lastRxTime=currentMicros;
-    bool rxState=digitalRead(rxPin);
-    bool isActive=(activeState) ? rxState : !rxState;
-    window[windowIndex]=(isActive==txState);
-    windowIndex=(windowIndex+1) % windowSize;
-  }
-
-  received=true;
-  for (int i=0; i< windowSize; i++) {
-    if (!window[i]) {
-      received=false;
-      break;
-    }
-  }
-
-  if (received) {
-    onActivate(0);
-  }
+  // if (received) {
+  //   onActivate(0);
+  // }
 }

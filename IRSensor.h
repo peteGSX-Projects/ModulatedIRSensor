@@ -35,7 +35,7 @@ public:
   /// @param transmitPin Pin for the IR transmitter
   /// @param receivePin Pin for the IR phototransistor
   /// @param beamBreak Set to true when transmitter/phototransistor face each other (defaul false)
-  IRSensor(int id, int transmitPin, int receivePin, bool beamBreak=false);
+  IRSensor(int id, int txPin, int rxPin, bool beamBreak=false);
 
   /// @brief Set function to call when sensor activated
   /// @param callback Function to call
@@ -53,8 +53,8 @@ public:
 
 private:
   int _id;
-  int _transmitPin;
-  int _receivePin;
+  int _txPin;
+  int _rxPin;
   bool _beamBreak;
   bool _activated;
   unsigned long _lastTxTime;
