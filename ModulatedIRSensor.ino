@@ -16,12 +16,16 @@
 */
 
 #include <Arduino.h>
+#include "version.h"
 #include "DeviceFunctions.h"
 
 void setup() {
   disableJTAG();
   Serial.begin(115200);
+  delay(5000);
   Serial.println(F("Encoded IR Sensor"));
+  Serial.print(F("Version: "));
+  Serial.println(VERSION);
   setupSensors();
 }
 

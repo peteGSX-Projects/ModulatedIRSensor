@@ -19,6 +19,8 @@
 *   Using cheap AliExpress IR sensors
 *   These sensors set an input pin low when activated in reflection mode
 *   In beam break mode, therefore, they will set an input pin high when activated
+*   Experimentation shows the receiver takes several microseconds to respond to
+*   a change in state, therefore a delay of 20 microseconds is added to compensate
 */
 
 #ifndef IRSENSOR_H
@@ -32,9 +34,8 @@ public:
   /// @brief Constructor for a sensor object
   /// @param transmitPin Pin for the IR transmitter
   /// @param receivePin Pin for the IR phototransistor
-  /// @param message Numeric message to transmit and validate has been received in order to activate
   /// @param beamBreak Set to true when transmitter/phototransistor face each other (defaul false)
-  IRSensor(int id, int transmitPin, int receivePin, int message, bool beamBreak=false);
+  IRSensor(int id, int txPin, int rxPin, bool beamBreak=false);
 
   /// @brief Set function to call when sensor activated
   /// @param callback Function to call
@@ -52,11 +53,18 @@ public:
 
 private:
   int _id;
-  int _transmitPin;
-  int _receivePin;
-  int _message;
+  int _txPin;
+  int _rxPin;
   bool _beamBreak;
   bool _activated;
+  unsigned long _lastTxTime;
+  unsigned long _lastRxTime;
+  unsigned long _txDelay;
+  unsigned long _rxDelay;
+  static const int _windowSize=10;
+  bool _window[_windowSize];
+  int _windowIndex;
+  bool _txState;
   void (*_activationCallback)(int id);
   void (*_deactivationCallback)(int id);
 

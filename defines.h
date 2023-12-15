@@ -19,7 +19,7 @@
 #define DEFINES_H
 
 #ifndef SENSOR_COUNT
-#define SENSOR_COUNT 2
+#define SENSOR_COUNT 14
 #endif
 
 #endif

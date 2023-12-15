@@ -20,10 +20,18 @@
 
 // IRSensor class public methods
 
-IRSensor::IRSensor(int id, int transmitPin, int receivePin, int message, bool beamBreak)
-: _id(id), _transmitPin(transmitPin), _receivePin(receivePin), _message(message),
-  _beamBreak(beamBreak), _activated(false),
-  _activationCallback(nullptr), _deactivationCallback(nullptr) {}
+IRSensor::IRSensor(int id, int txPin, int rxPin, bool beamBreak)
+: _id(id), _txPin(txPin), _rxPin(rxPin), _beamBreak(beamBreak) {
+  _activated=false;
+  _lastTxTime=0;
+  _lastRxTime=0;
+  _txDelay=10000;
+  _rxDelay=10020;
+  _windowIndex=0;
+  _txState=true;
+  _activationCallback=nullptr;
+  _deactivationCallback=nullptr;
+}
 
 void IRSensor::setActivateCallback(void (*callback)(int id)) {
   _activationCallback=callback;
@@ -34,22 +42,50 @@ void IRSensor::setDeactivateCallback(void (*callback)(int id)) {
 }
 
 void IRSensor::begin() {
-  pinMode(_transmitPin, OUTPUT);
-  pinMode(_receivePin, INPUT);
-  digitalWrite(_transmitPin, HIGH);
+  pinMode(_txPin, OUTPUT);
+  pinMode(_rxPin, INPUT);
+  digitalWrite(_txPin, _txState);
 }
 
 void IRSensor::check() {
-  // Active: Reflection=LOW, Beam break=HIGH
-  bool active=false;
-  bool currentState=digitalRead(_receivePin);
-  if (_beamBreak && currentState) {
-    active=true;
-  } else if (!_beamBreak && !currentState) {
-    active=true;
+  unsigned long currentMicros=micros();
+
+  if (currentMicros-_lastTxTime>_txDelay) {
+    _lastTxTime=currentMicros;
+    _txState=!_txState;
+    digitalWrite(_txPin, _txState);
   }
-  if (_activated!=active) {
-    _activated=active;
+  
+  if (currentMicros-_lastRxTime>_rxDelay) {
+    _lastRxTime=currentMicros;
+    bool rxState=digitalRead(_rxPin);
+    bool isActive=(_beamBreak) ? rxState : !rxState;
+    _window[_windowIndex]=(isActive==_txState);
+    // Serial.print(F("_txState|rxState|_beamBreak|isActive|_window["));
+    // Serial.print(_windowIndex);
+    // Serial.print(F("]: "));
+    // Serial.print(_txState);
+    // Serial.print(F("|"));
+    // Serial.print(rxState);
+    // Serial.print(F("|"));
+    // Serial.print(_beamBreak);
+    // Serial.print(F("|"));
+    // Serial.print(isActive);
+    // Serial.print(F("|"));
+    // Serial.println(_window[_windowIndex]);
+    _windowIndex=(_windowIndex+1)%_windowSize;
+  }
+
+  bool activated=true;
+  for (int i=0; i<_windowSize; i++) {
+    if (!_window[i]) {
+      activated=false;
+      break;
+    }
+  }
+  
+  if (_activated!=activated) {
+    _activated=activated;
     if (_activated && _activationCallback) {
       _activationCallback(_id);
     } else if (!_activated && _deactivationCallback) {
