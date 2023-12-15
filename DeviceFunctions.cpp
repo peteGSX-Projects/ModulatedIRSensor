@@ -38,6 +38,13 @@ SensorConfig sensorConfigs[SENSOR_COUNT]={
   {PB13,PB12,false},
 };
 
+PinName pinNames[SENSOR_COUNT] = {
+  {PC13,"PC13"},{PC14,"PC14"},{PC15,"PC15"},{PA0,"PA0"},{PA1,"PA1"},{PA2,"PA2"},{PA3,"PA3"},{PA4,"PA4"},
+  {PA5,"PA5"},{PA6,"PA6"},{PA7,"PA7"},{PB0,"PB0"},{PB1,"PB1"},{PB10,"PB10"},{PB11,"PB11"},
+  {PB9,"PB9"},{PB8,"PB8"},{PB5,"PB5"},{PB4,"PB4"},{PB3,"PB3"},{PA15,"PA15"},
+  {PA10,"PA10"},{PA9,"PA9"},{PA8,"PA8"},{PB15,"PB15"},{PB14,"PB14"},{PB13,"PB13"},{PB12,"PB12"},
+};
+
 void disableJTAG() {
   // Disable JTAG and enable SWD by clearing the SWJ_CFG bits
   // Assuming the register is named AFIO_MAPR or AFIO_MAPR2

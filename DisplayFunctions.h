@@ -15,19 +15,12 @@
  *  along with this code.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef DEFINES_H
-#define DEFINES_H
+#ifndef DISPLAYFUNCTIONS_H
+#define DISPLAYFUNCTIONS_H
 
-#ifndef SENSOR_COUNT
-#define SENSOR_COUNT 14
-#endif
-
-#ifndef I2C_ADDRESS
-#define I2C_ADDRESS 0x65
-#endif
-
-#ifndef DIAG_CONFIG_DELAY
-#define DIAG_CONFIG_DELAY 5
-#endif
+void setVersion();
+void startupDisplay();
+void displaySensors();
+void displayVpinMap();
 
 #endif

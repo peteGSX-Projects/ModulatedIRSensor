@@ -28,8 +28,14 @@ struct SensorConfig {
   bool beamBreak;
 };
 
+struct PinName {
+  int pin;
+  const char* pinName;
+};
+
 extern SensorConfig sensorConfigs[SENSOR_COUNT];
 extern IRSensor* sensors[SENSOR_COUNT];
+extern PinName pinNames[SENSOR_COUNT];
 
 void disableJTAG();
 void setupSensors();

@@ -18,6 +18,7 @@
 #include <Arduino.h>
 #include "version.h"
 #include "DeviceFunctions.h"
+#include "DisplayFunctions.h"
 
 void setup() {
   disableJTAG();
