@@ -15,11 +15,22 @@
  *  along with this code.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef DEFINES_H
-#define DEFINES_H
+#include <Arduino.h>
+#include "version.h"
+#include "DeviceFunctions.h"
 
-#ifndef SENSOR_COUNT
-#define SENSOR_COUNT 14
-#endif
+void setup() {
+  disableJTAG();
+  Serial.begin(115200);
+  delay(5000);
+  Serial.println(F("Encoded IR Sensor"));
+  Serial.print(F("Version: "));
+  Serial.println(VERSION);
+  setupSensors();
+}
 
-#endif
+void loop() {
+  for (int i=0; i<SENSOR_COUNT; i++) {
+    sensors[i]->check();
+  }
+}
