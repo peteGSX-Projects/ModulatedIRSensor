@@ -30,4 +30,17 @@
 #define DIAG_CONFIG_DELAY 5
 #endif
 
+#define EXIOINIT 0xE0     // Flag to start setup procedure
+#define EXIORDY 0xE1      // Flag setup procedure done, return to CS to ACK
+#define EXIODPUP 0xE2     // Flag we're receiving digital pin pullup configuration
+#define EXIOVER 0xE3      // Flag to send version
+#define EXIORDAN 0xE4     // Flag an analogue input is being read
+#define EXIOWRD 0xE5      // Flag for digital write
+#define EXIORDD 0xE6      // Flag a digital input is being read
+#define EXIOENAN 0xE7     // Flag to enable an analogue input pin
+#define EXIOINITA 0xE8    // Flag to send analogue pin info
+#define EXIOPINS 0xE9     // Flag we need to send pin counts
+#define EXIOWRAN 0xEA     // Flag we're receiving an analogue write (PWM)
+#define EXIOERR 0xEF      // Flag something has errored to send to device driver
+
 #endif

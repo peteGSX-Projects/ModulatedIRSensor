@@ -18,6 +18,9 @@
 #ifndef DISPLAYFUNCTIONS_H
 #define DISPLAYFUNCTIONS_H
 
+extern int firstVpin;
+extern uint8_t versionBuffer[3];
+
 void setVersion();
 void startupDisplay();
 void displaySensors();

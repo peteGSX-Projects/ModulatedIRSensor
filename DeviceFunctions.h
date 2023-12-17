@@ -26,20 +26,21 @@ struct SensorConfig {
   int transmitPin;
   int receivePin;
   bool beamBreak;
+  bool startState;
 };
 
-struct PinName {
+struct PinNameMap {
   int pin;
   const char* pinName;
 };
 
 extern SensorConfig sensorConfigs[SENSOR_COUNT];
 extern IRSensor* sensors[SENSOR_COUNT];
-extern PinName pinNames[SENSOR_COUNT];
+extern byte sensorStates[(SENSOR_COUNT/8)+1];
+extern PinNameMap pinNames[28];
 
 void disableJTAG();
 void setupSensors();
-void onActivate(int id);
-void onDeactivate(int id);
+void updateSensorStates(int sensor);
 
 #endif

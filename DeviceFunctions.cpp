@@ -22,23 +22,23 @@
 ///        {transmitPin, receivePin, beamBreak}
 ///        Set beamBreak to true if the transmitter and receiver are facing each other in a beam break configuration
 SensorConfig sensorConfigs[SENSOR_COUNT]={
-  {PC13,PC14,false},
-  {PC15,PA0,false},
-  {PA1,PA2,false},
-  {PA3,PA4,false},
-  {PA5,PA6,false},
-  {PA7,PB0,false},
-  {PB1,PB10,false},
-  {PB11,PB9,false},
-  {PB8,PB5,false},
-  {PB4,PB3,false},
-  {PA15,PA10,false},
-  {PA9,PA8,false},
-  {PB15,PB14,false},
-  {PB13,PB12,false},
+  {PC13,PC14,false,true},
+  {PC15,PA0,false,false},
+  {PA1,PA2,false,true},
+  {PA3,PA4,false,false},
+  {PA5,PA6,false,true},
+  {PA7,PB0,false,false},
+  {PB1,PB10,false,true},
+  {PB11,PB9,false,false},
+  {PB8,PB5,false,true},
+  {PB4,PB3,false,false},
+  {PA15,PA10,false,true},
+  {PA9,PA8,false,false},
+  {PB15,PB14,false,true},
+  {PB13,PB12,false,false},
 };
 
-PinName pinNames[SENSOR_COUNT] = {
+PinNameMap pinNames[28] = {
   {PC13,"PC13"},{PC14,"PC14"},{PC15,"PC15"},{PA0,"PA0"},{PA1,"PA1"},{PA2,"PA2"},{PA3,"PA3"},{PA4,"PA4"},
   {PA5,"PA5"},{PA6,"PA6"},{PA7,"PA7"},{PB0,"PB0"},{PB1,"PB1"},{PB10,"PB10"},{PB11,"PB11"},
   {PB9,"PB9"},{PB8,"PB8"},{PB5,"PB5"},{PB4,"PB4"},{PB3,"PB3"},{PA15,"PA15"},
@@ -54,24 +54,21 @@ void disableJTAG() {
 }
 
 IRSensor* sensors[SENSOR_COUNT];
+byte sensorStates[(SENSOR_COUNT/8)+1];
 
 void setupSensors() {
   for (int i=0; i<SENSOR_COUNT; i++) {
-    sensors[i]=new IRSensor(i, sensorConfigs[i].transmitPin, sensorConfigs[i].receivePin, sensorConfigs[i].beamBreak);
-    sensors[i]->setActivateCallback(onActivate);
-    sensors[i]->setDeactivateCallback(onDeactivate);
+    sensors[i]=new IRSensor(i, sensorConfigs[i].transmitPin, sensorConfigs[i].receivePin, sensorConfigs[i].beamBreak, sensorConfigs[i].startState);
     sensors[i]->begin();
   }
 }
 
-void onActivate(int id) {
-  Serial.print(F("Sensor "));
-  Serial.print(id);
-  Serial.println(F(" activated"));
-}
-
-void onDeactivate(int id) {
-  Serial.print(F("Sensor "));
-  Serial.print(id);
-  Serial.println(F(" deactivated"));
+void updateSensorStates(int sensor) {
+  uint8_t sensorByte=sensor/8;
+  uint8_t sensorBit=sensor-(sensorByte*8);
+  if (sensors[sensor]->getActivated()) {
+    bitSet(sensorStates[sensorByte], sensorBit);
+  } else {
+    bitClear(sensorStates[sensorByte], sensorBit);
+  }
 }

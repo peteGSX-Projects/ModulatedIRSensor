@@ -15,23 +15,15 @@
  *  along with this code.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+#ifndef I2CFUNCTIONS_H
+#define I2CFUNCTIONS_H
+
 #include <Arduino.h>
-#include "version.h"
-#include "I2CFunctions.h"
-#include "DeviceFunctions.h"
-#include "DisplayFunctions.h"
 
-void setup() {
-  disableJTAG();
-  Serial.begin(115200);
-  startupDisplay();
-  setupI2C();
-  setupSensors();
-}
+extern uint8_t i2cAddress;
 
-void loop() {
-  for (int i=0; i<SENSOR_COUNT; i++) {
-    sensors[i]->check();
-    updateSensorStates(i);
-  }
-}
+void setupI2C();
+void receiveEvent(int numBytes);
+void requestEvent();
+
+#endif
