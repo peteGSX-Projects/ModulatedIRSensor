@@ -59,16 +59,20 @@ byte sensorStates[(SENSOR_COUNT/8)+1];
 void setupSensors() {
   for (int i=0; i<SENSOR_COUNT; i++) {
     sensors[i]=new IRSensor(i, sensorConfigs[i].transmitPin, sensorConfigs[i].receivePin, sensorConfigs[i].beamBreak, sensorConfigs[i].startState);
+    sensors[i]->setActivateCallback(sensorActivated);
+    sensors[i]->setDeactivateCallback(sensorDeactivated);
     sensors[i]->begin();
   }
 }
 
-void updateSensorStates(int sensor) {
-  uint8_t sensorByte=sensor/8;
-  uint8_t sensorBit=sensor-(sensorByte*8);
-  if (sensors[sensor]->getActivated()) {
-    bitSet(sensorStates[sensorByte], sensorBit);
-  } else {
-    bitClear(sensorStates[sensorByte], sensorBit);
-  }
+void sensorActivated(int id) {
+  uint8_t sensorByte=id/8;
+  uint8_t sensorBit=id-(sensorByte*8);
+  bitSet(sensorStates[sensorByte], sensorBit);
+}
+
+void sensorDeactivated(int id) {
+  uint8_t sensorByte=id/8;
+  uint8_t sensorBit=id-(sensorByte*8);
+  bitClear(sensorStates[sensorByte], sensorBit);
 }

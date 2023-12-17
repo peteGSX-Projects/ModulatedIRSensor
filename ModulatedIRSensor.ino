@@ -32,6 +32,5 @@ void setup() {
 void loop() {
   for (int i=0; i<SENSOR_COUNT; i++) {
     sensors[i]->check();
-    updateSensorStates(i);
   }
 }

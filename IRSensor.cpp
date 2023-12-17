@@ -27,6 +27,8 @@ IRSensor::IRSensor(int id, int txPin, int rxPin, bool beamBreak, bool startState
   _lastRxTime=0;
   _windowIndex=0;
   _rxState=false;
+  _activationCallback=nullptr;
+  _deactivationCallback=nullptr;
 }
 
 void IRSensor::begin() {
@@ -79,6 +81,14 @@ bool IRSensor::getBeamBreak() {
 
 bool IRSensor::getActivated() {
   return _activated;
+}
+
+void IRSensor::setActivateCallback(void (*callback)(int id)) {
+  _activationCallback=callback;
+}
+
+void IRSensor::setDeactivateCallback(void (*callback)(int it)) {
+  _deactivationCallback=callback;
 }
 
 // IRSensor class private methods

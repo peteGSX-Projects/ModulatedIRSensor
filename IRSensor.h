@@ -59,6 +59,14 @@ public:
   /// @return true/false
   bool getActivated();
 
+  /// @brief Set function to call when sensor activated
+  /// @param callback Function to call
+  void setActivateCallback(void (*callback)(int id));
+
+  /// @brief Set function to call when sensor deactivated
+  /// @param callback Function to call
+  void setDeactivateCallback(void (*callback)(int id));
+
 private:
   int _id;
   int _txPin;
@@ -74,6 +82,8 @@ private:
   bool _window[_windowSize];
   int _windowIndex;
   bool _rxState;
+  void (*_activationCallback)(int id);
+  void (*_deactivationCallback)(int id);
 
 };
 

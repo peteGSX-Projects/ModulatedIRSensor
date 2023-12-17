@@ -41,6 +41,7 @@ extern PinNameMap pinNames[28];
 
 void disableJTAG();
 void setupSensors();
-void updateSensorStates(int sensor);
+void sensorActivated(int id);
+void sensorDeactivated(int id);
 
 #endif
