@@ -15,14 +15,12 @@
  *  along with this code.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef DISPLAYFUNCTIONS_H
-#define DISPLAYFUNCTIONS_H
+#ifndef SERIALFUNCTIONS_H
+#define SERIALFUNCTIONS_H
 
-extern int firstVpin;
-extern unsigned long displayDelay;
+#include <Arduino.h>
 
-void startupDisplay();
-void displaySensors();
-void displayVpinMap();
+void processSerialInput();
+void processCaseD(int delay);
 
 #endif

@@ -17,54 +17,34 @@
 
 #include <Arduino.h>
 #include "defines.h"
-#include "version.h"
 #include "DisplayFunctions.h"
 #include "DeviceFunctions.h"
 #include "I2CFunctions.h"
 
-char* version;
-uint8_t versionBuffer[3];
 unsigned long lastSensorDisplay=0;
 unsigned long displayDelay=DIAG_CONFIG_DELAY*1000;
 int firstVpin=0;
 
-void setVersion() {
-  const String versionString = VERSION;
-  char versionArray[versionString.length() + 1];
-  versionString.toCharArray(versionArray, versionString.length() + 1);
-  version = strtok(versionArray, "."); // Split version on .
-  versionBuffer[0] = atoi(version);  // Major first
-  version = strtok(NULL, ".");
-  versionBuffer[1] = atoi(version);  // Minor next
-  version = strtok(NULL, ".");
-  versionBuffer[2] = atoi(version);  // Patch last
-}
-
 void startupDisplay() {
   Serial.println(F("Modulated IR Sensor"));
   Serial.print(F("Version: "));
-  Serial.println(VERSION);
+  Serial.print(versionBuffer[0]);
+  Serial.print(F("."));
+  Serial.print(versionBuffer[1]);
+  Serial.print(F("."));
+  Serial.println(versionBuffer[2]);
   Serial.print(F("Available at I2C address 0x"));
-  Serial.println(i2cAddress);
+  Serial.println(i2cAddress, HEX);
 }
 
 void displaySensors() {
   if (millis()-lastSensorDisplay>displayDelay) {
     lastSensorDisplay=millis();
     Serial.println(F("Current sensor states:"));
+    int vpin=firstVpin;
     for (int i=0; i<SENSOR_COUNT; i++) {
-      char pinName[5];
-      int nameLength=strlen(pinNames[i].pinName);
-      int spaces=4-nameLength;
-
-      if (spaces>0) {
-        for (int j=0; j<spaces; j++) {
-          pinName[j]=' ';
-        }
-        strncpy(pinName, pinNames[i].pinName, nameLength);
-      }
-      Serial.print(F("Pin|Tx State|Rx State|Beam Break|Active: "));
-      Serial.print(pinName);
+      Serial.print(F("Vpin|Tx State|Rx State|Beam Break|Active: "));
+      Serial.print(vpin);
       Serial.print(F("|"));
       Serial.print(sensors[i]->getTxState());
       Serial.print(F("|"));
@@ -73,11 +53,34 @@ void displaySensors() {
       Serial.print(sensors[i]->getBeamBreak());
       Serial.print(F("|"));
       Serial.println(sensors[i]->getActivated());
+      vpin++;
     }
   }
 }
 
 void displayVpinMap() {
   int vpin=firstVpin;
-  
+  Serial.println(F("Vpin to sensor pin mappings (Vpin => Tx pin|Rx pin):"));
+  for (uint8_t i=0; i<SENSOR_COUNT; i++) {
+    char txName[5];
+    char rxName[5];
+    int txPin=sensorConfigs[i].transmitPin;
+    int rxPin=sensorConfigs[i].receivePin;
+    for (uint8_t i=0; i<28; i++) {
+      if (pinNames[i].pin==txPin) {
+        strncpy(txName, pinNames[i].pinName, sizeof(txName)-1);
+        txName[sizeof(txName)-1]='\0';
+      }
+      if (pinNames[i].pin==rxPin) {
+        strncpy(rxName, pinNames[i].pinName, sizeof(rxName)-1);
+        rxName[sizeof(rxName)-1]='\0';
+      }
+    }
+    Serial.print(vpin);
+    Serial.print(F(" => "));
+    Serial.print(txName);
+    Serial.print(F("|"));
+    Serial.println(rxName);
+    vpin++;
+  }
 }

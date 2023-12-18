@@ -64,6 +64,11 @@ void IRSensor::check() {
   
   if (_activated!=activated) {
     _activated=activated;
+    if (_activated && _activationCallback) {
+      _activationCallback(_id);
+    } else if (!_activated && _deactivationCallback) {
+      _deactivationCallback(_id);
+    }
   }
 }
 

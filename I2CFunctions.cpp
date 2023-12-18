@@ -31,10 +31,10 @@ uint8_t outboundFlag;
 
 void setupI2C() {
   if (i2cAddress<0x08 || i2cAddress>0x77) {
-    i2cAddress=0x65;
     Serial.print(F("Invalid I2C address configured: 0x"));
     Serial.print(i2cAddress, HEX);
     Serial.println(F(", using default instead"));
+    i2cAddress=0x65;
   }
   Wire.begin(i2cAddress);
 }

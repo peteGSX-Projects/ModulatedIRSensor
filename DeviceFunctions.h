@@ -38,10 +38,14 @@ extern SensorConfig sensorConfigs[SENSOR_COUNT];
 extern IRSensor* sensors[SENSOR_COUNT];
 extern byte sensorStates[(SENSOR_COUNT/8)+1];
 extern PinNameMap pinNames[28];
+extern uint8_t versionBuffer[3];
+extern bool diag;
 
 void disableJTAG();
 void setupSensors();
 void sensorActivated(int id);
 void sensorDeactivated(int id);
+void setVersion();
+void reset();
 
 #endif

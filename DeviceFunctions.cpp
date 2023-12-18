@@ -16,6 +16,7 @@
 */
 
 #include <Arduino.h>
+#include "version.h"
 #include "DeviceFunctions.h"
 
 /// @brief Configuration of the IR sensors in this format:
@@ -55,6 +56,9 @@ void disableJTAG() {
 
 IRSensor* sensors[SENSOR_COUNT];
 byte sensorStates[(SENSOR_COUNT/8)+1];
+char* version;
+uint8_t versionBuffer[3];
+bool diag=false;
 
 void setupSensors() {
   for (int i=0; i<SENSOR_COUNT; i++) {
@@ -69,10 +73,34 @@ void sensorActivated(int id) {
   uint8_t sensorByte=id/8;
   uint8_t sensorBit=id-(sensorByte*8);
   bitSet(sensorStates[sensorByte], sensorBit);
+  Serial.print(F("Sensor "));
+  Serial.print(id);
+  Serial.println(F(" activated"));
 }
 
 void sensorDeactivated(int id) {
   uint8_t sensorByte=id/8;
   uint8_t sensorBit=id-(sensorByte*8);
   bitClear(sensorStates[sensorByte], sensorBit);
+  Serial.print(F("Sensor "));
+  Serial.print(id);
+  Serial.println(F(" deactivated"));
+}
+
+void setVersion() {
+  const String versionString = VERSION;
+  char versionArray[versionString.length() + 1];
+  versionString.toCharArray(versionArray, versionString.length() + 1);
+  version = strtok(versionArray, "."); // Split version on .
+  versionBuffer[0] = atoi(version);  // Major first
+  version = strtok(NULL, ".");
+  versionBuffer[1] = atoi(version);  // Minor next
+  version = strtok(NULL, ".");
+  versionBuffer[2] = atoi(version);  // Patch last
+}
+
+void reset() {
+  __disable_irq();
+  NVIC_SystemReset();
+  while(true) {};
 }
