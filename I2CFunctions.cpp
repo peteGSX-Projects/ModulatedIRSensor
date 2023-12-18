@@ -37,6 +37,8 @@ void setupI2C() {
     i2cAddress=0x65;
   }
   Wire.begin(i2cAddress);
+  Wire.onReceive(receiveEvent);
+  Wire.onRequest(requestEvent);
 }
 
 void receiveEvent(int numBytes) {
@@ -119,7 +121,7 @@ void requestEvent() {
       break;
     
     case EXIOINITA:
-      Wire.write(noData, 0);
+      Wire.write(0);
       break;
 
     case EXIOVER:
@@ -135,7 +137,7 @@ void requestEvent() {
       break;
 
     case EXIORDAN:
-      Wire.write(noData, 0);
+      Wire.write(0);
       break;
     
     case EXIOWRD:
