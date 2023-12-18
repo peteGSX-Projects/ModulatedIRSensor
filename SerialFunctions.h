@@ -15,37 +15,12 @@
  *  along with this code.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef DEVICEFUNCTIONS_H
-#define DEVICEFUNCTIONS_H
+#ifndef SERIALFUNCTIONS_H
+#define SERIALFUNCTIONS_H
 
 #include <Arduino.h>
-#include "defines.h"
-#include "IRSensor.h"
 
-struct SensorConfig {
-  int transmitPin;
-  int receivePin;
-  bool beamBreak;
-  bool startState;
-};
-
-struct PinNameMap {
-  int pin;
-  const char* pinName;
-};
-
-extern SensorConfig sensorConfigs[SENSOR_COUNT];
-extern IRSensor* sensors[SENSOR_COUNT];
-extern byte sensorStates[(SENSOR_COUNT/8)+1];
-extern PinNameMap pinNames[28];
-extern uint8_t versionBuffer[3];
-extern bool diag;
-
-void disableJTAG();
-void setupSensors();
-void sensorActivated(int id);
-void sensorDeactivated(int id);
-void setVersion();
-void reset();
+void processSerialInput();
+void processCaseD(int delay);
 
 #endif

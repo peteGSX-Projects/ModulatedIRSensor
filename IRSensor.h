@@ -35,7 +35,29 @@ public:
   /// @param transmitPin Pin for the IR transmitter
   /// @param receivePin Pin for the IR phototransistor
   /// @param beamBreak Set to true when transmitter/phototransistor face each other (defaul false)
-  IRSensor(int id, int txPin, int rxPin, bool beamBreak=false);
+  IRSensor(int id, int txPin, int rxPin, bool beamBreak=false, bool startState=true, unsigned long transmitDelay=10000, unsigned long responseDelay=20);
+
+  /// @brief Initiate sensor monitoring, sets pin modes and attaches to the interrupt handler
+  void begin();
+
+  /// @brief Routinely check each sensor pair to see if they have been activated
+  void check();
+
+  /// @brief Get current state of the transmit pin
+  /// @return true/false
+  bool getTxState();
+
+  /// @brief Get current state of the receive pin
+  /// @return true/false
+  bool getRxState();
+
+  /// @brief Get whether it's configured for beam break mode or not
+  /// @return true/false
+  bool getBeamBreak();
+
+  /// @brief Check if currently activated
+  /// @return true/false
+  bool getActivated();
 
   /// @brief Set function to call when sensor activated
   /// @param callback Function to call
@@ -44,27 +66,22 @@ public:
   /// @brief Set function to call when sensor deactivated
   /// @param callback Function to call
   void setDeactivateCallback(void (*callback)(int id));
-  
-  /// @brief Initiate sensor monitoring, sets pin modes and attaches to the interrupt handler
-  void begin();
-
-  /// @brief Routinely check each sensor pair to see if they have been activated
-  void check();
 
 private:
   int _id;
   int _txPin;
   int _rxPin;
   bool _beamBreak;
+  bool _txState;
+  unsigned long _txDelay;
+  unsigned long _rxDelay;
   bool _activated;
   unsigned long _lastTxTime;
   unsigned long _lastRxTime;
-  unsigned long _txDelay;
-  unsigned long _rxDelay;
   static const int _windowSize=10;
   bool _window[_windowSize];
   int _windowIndex;
-  bool _txState;
+  bool _rxState;
   void (*_activationCallback)(int id);
   void (*_deactivationCallback)(int id);
 

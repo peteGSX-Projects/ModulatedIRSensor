@@ -17,15 +17,17 @@
 
 #include <Arduino.h>
 #include "version.h"
+#include "I2CFunctions.h"
 #include "DeviceFunctions.h"
+#include "DisplayFunctions.h"
+#include "SerialFunctions.h"
 
 void setup() {
   disableJTAG();
   Serial.begin(115200);
-  delay(5000);
-  Serial.println(F("Encoded IR Sensor"));
-  Serial.print(F("Version: "));
-  Serial.println(VERSION);
+  setVersion();
+  startupDisplay();
+  setupI2C();
   setupSensors();
 }
 
@@ -33,4 +35,8 @@ void loop() {
   for (int i=0; i<SENSOR_COUNT; i++) {
     sensors[i]->check();
   }
+  if (diag) {
+    displaySensors();
+  }
+  processSerialInput();
 }

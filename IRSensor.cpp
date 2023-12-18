@@ -20,25 +20,15 @@
 
 // IRSensor class public methods
 
-IRSensor::IRSensor(int id, int txPin, int rxPin, bool beamBreak)
-: _id(id), _txPin(txPin), _rxPin(rxPin), _beamBreak(beamBreak) {
+IRSensor::IRSensor(int id, int txPin, int rxPin, bool beamBreak, bool startState, unsigned long transmitDelay, unsigned long responseDelay)
+: _id(id), _txPin(txPin), _rxPin(rxPin), _beamBreak(beamBreak), _txState(startState), _txDelay(transmitDelay), _rxDelay(transmitDelay+responseDelay) {
   _activated=false;
   _lastTxTime=0;
   _lastRxTime=0;
-  _txDelay=10000;
-  _rxDelay=10020;
   _windowIndex=0;
-  _txState=true;
+  _rxState=false;
   _activationCallback=nullptr;
   _deactivationCallback=nullptr;
-}
-
-void IRSensor::setActivateCallback(void (*callback)(int id)) {
-  _activationCallback=callback;
-}
-
-void IRSensor::setDeactivateCallback(void (*callback)(int id)) {
-  _deactivationCallback=callback;
 }
 
 void IRSensor::begin() {
@@ -58,21 +48,9 @@ void IRSensor::check() {
   
   if (currentMicros-_lastRxTime>_rxDelay) {
     _lastRxTime=currentMicros;
-    bool rxState=digitalRead(_rxPin);
-    bool isActive=(_beamBreak) ? rxState : !rxState;
+    _rxState=digitalRead(_rxPin);
+    bool isActive=(_beamBreak) ? _rxState : !_rxState;
     _window[_windowIndex]=(isActive==_txState);
-    // Serial.print(F("_txState|rxState|_beamBreak|isActive|_window["));
-    // Serial.print(_windowIndex);
-    // Serial.print(F("]: "));
-    // Serial.print(_txState);
-    // Serial.print(F("|"));
-    // Serial.print(rxState);
-    // Serial.print(F("|"));
-    // Serial.print(_beamBreak);
-    // Serial.print(F("|"));
-    // Serial.print(isActive);
-    // Serial.print(F("|"));
-    // Serial.println(_window[_windowIndex]);
     _windowIndex=(_windowIndex+1)%_windowSize;
   }
 
@@ -92,6 +70,30 @@ void IRSensor::check() {
       _deactivationCallback(_id);
     }
   }
+}
+
+bool IRSensor::getTxState() {
+  return _txState;
+}
+
+bool IRSensor::getRxState() {
+  return _rxState;
+}
+
+bool IRSensor::getBeamBreak() {
+  return _beamBreak;
+}
+
+bool IRSensor::getActivated() {
+  return _activated;
+}
+
+void IRSensor::setActivateCallback(void (*callback)(int id)) {
+  _activationCallback=callback;
+}
+
+void IRSensor::setDeactivateCallback(void (*callback)(int it)) {
+  _deactivationCallback=callback;
 }
 
 // IRSensor class private methods
