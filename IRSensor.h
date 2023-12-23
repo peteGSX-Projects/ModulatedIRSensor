@@ -67,6 +67,14 @@ public:
   /// @param callback Function to call
   void setDeactivateCallback(void (*callback)(int id));
 
+  /// @brief Get the transmitter pin number
+  /// @return Transmitter pin number
+  int getTxPin();
+
+  /// @brief Get the receiver pin number
+  /// @return Receiver pin number
+  int getRxPin();
+
 private:
   int _id;
   int _txPin;

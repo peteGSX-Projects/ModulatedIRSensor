@@ -62,18 +62,6 @@
 #define EXIOWRAN 0xEA     // Flag we're receiving an analogue write (PWM)
 #define EXIOERR 0xEF      // Flag something has errored to send to device driver
 
-struct SensorConfig {
-  int transmitPin;
-  int receivePin;
-  bool beamBreak;
-  bool startState;
-  unsigned long txDelay;
-  unsigned long rxDelay;
-
-  SensorConfig(int txPin, int rxPin, bool beamBreak=false, bool startState=true, unsigned long txDelay=10000, unsigned long rxDelay=20)
-  : transmitPin(txPin), receivePin(rxPin), beamBreak(beamBreak), startState(startState), txDelay(txDelay), rxDelay(rxDelay) {}
-};
-
 struct PinNameMap {
   int pin;
   const char* pinName;

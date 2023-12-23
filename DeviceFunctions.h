@@ -21,7 +21,6 @@
 #include <Arduino.h>
 #include "Defines.h"
 
-extern SensorConfig sensorConfigs[SENSOR_COUNT];
 extern IRSensor* sensors[SENSOR_COUNT];
 extern byte sensorStates[(SENSOR_COUNT/8)+1];
 extern PinNameMap pinNames[TOTAL_PINS];

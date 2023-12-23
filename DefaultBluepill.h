@@ -24,21 +24,21 @@
 /// @brief Configuration of the IR sensors in this format:
 ///        {transmitPin, receivePin, beamBreak}
 ///        Set beamBreak to true if the transmitter and receiver are facing each other in a beam break configuration
-SensorConfig sensorConfigs[SENSOR_COUNT]={
-  {PC13,PC14,false,true},
-  {PC15,PA0,false,false},
-  {PA1,PA2,false,true},
-  {PA3,PA4,false,false},
-  {PA5,PA6,false,true},
-  {PA7,PB0,false,false},
-  {PB1,PB10,false,true},
-  {PB11,PB9,false,false},
-  {PB8,PB5,false,true},
-  {PB4,PB3,false,false},
-  {PA15,PA10,false,true},
-  {PA9,PA8,false,false},
-  {PB15,PB14,false,true},
-  {PB13,PB12,false,false},
+IRSensor* sensors[SENSOR_COUNT]={
+  new IRSensor(0,PC13,PC14,false,true),
+  new IRSensor(1,PC15,PA0,false,false),
+  new IRSensor(2,PA1,PA2,false,true),
+  new IRSensor(3,PA3,PA4,false,false),
+  new IRSensor(4,PA5,PA6,false,true),
+  new IRSensor(5,PA7,PB0,false,false),
+  new IRSensor(6,PB1,PB10,false,true),
+  new IRSensor(7,PB11,PB9,false,false),
+  new IRSensor(8,PB8,PB5,false,true),
+  new IRSensor(9,PB4,PB3,false,false),
+  new IRSensor(10,PA15,PA10,false,true),
+  new IRSensor(11,PA9,PA8,false,false),
+  new IRSensor(12,PB15,PB14,false,true),
+  new IRSensor(13,PB13,PB12,false,false),
 };
 
 #endif

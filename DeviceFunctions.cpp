@@ -56,7 +56,6 @@ PinNameMap pinNames[TOTAL_PINS] = {
 };
 #endif
 
-IRSensor* sensors[SENSOR_COUNT];
 byte sensorStates[(SENSOR_COUNT/8)+1];
 char* version;
 uint8_t versionBuffer[3];
@@ -74,7 +73,6 @@ void disableJTAG() {
 
 void setupSensors() {
   for (int i=0; i<SENSOR_COUNT; i++) {
-    sensors[i]=new IRSensor(i, sensorConfigs[i].transmitPin, sensorConfigs[i].receivePin, sensorConfigs[i].beamBreak, sensorConfigs[i].startState);
     sensors[i]->setActivateCallback(sensorActivated);
     sensors[i]->setDeactivateCallback(sensorDeactivated);
     sensors[i]->begin();
