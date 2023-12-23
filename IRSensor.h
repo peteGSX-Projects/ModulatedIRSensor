@@ -34,7 +34,7 @@ public:
   /// @brief Constructor for a sensor object
   /// @param transmitPin Pin for the IR transmitter
   /// @param receivePin Pin for the IR phototransistor
-  /// @param beamBreak Set to true when transmitter/phototransistor face each other (defaul false)
+  /// @param beamBreak Set to true when transmitter/phototransistor face each other (default false)
   IRSensor(int id, int txPin, int rxPin, bool beamBreak=false, bool startState=true, unsigned long transmitDelay=10000, unsigned long responseDelay=20);
 
   /// @brief Initiate sensor monitoring, sets pin modes and attaches to the interrupt handler

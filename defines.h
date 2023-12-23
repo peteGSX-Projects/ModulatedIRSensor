@@ -31,7 +31,7 @@
 #if defined(ARDUINO_BLUEPILL_F103C8)
 #define SENSOR_COUNT 14
 #elif defined(ARDUINO_AVR_MEGA2560) || defined(ARDUINO_AVR_MEGA)
-#define SENSOR_COUNT 62
+#define SENSOR_COUNT 31
 #endif
 #endif
 

@@ -35,6 +35,9 @@ void startupDisplay() {
   Serial.println(versionBuffer[2]);
   Serial.print(F("Available at I2C address 0x"));
   Serial.println(i2cAddress, HEX);
+  Serial.print(F("Configured for "));
+  Serial.print(SENSOR_COUNT);
+  Serial.println(F(" sensors"));
 }
 
 void displaySensors() {
