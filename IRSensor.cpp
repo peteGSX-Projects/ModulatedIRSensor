@@ -96,4 +96,12 @@ void IRSensor::setDeactivateCallback(void (*callback)(int it)) {
   _deactivationCallback=callback;
 }
 
+int IRSensor::getTxPin() {
+  return _txPin;
+}
+
+int IRSensor::getRxPin() {
+  return _rxPin;
+}
+
 // IRSensor class private methods

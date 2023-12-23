@@ -27,14 +27,14 @@
 #define IRSENSOR_H
 
 #include <Arduino.h>
-#include "defines.h"
+#include "Defines.h"
 
 class IRSensor {
 public:
   /// @brief Constructor for a sensor object
   /// @param transmitPin Pin for the IR transmitter
   /// @param receivePin Pin for the IR phototransistor
-  /// @param beamBreak Set to true when transmitter/phototransistor face each other (defaul false)
+  /// @param beamBreak Set to true when transmitter/phototransistor face each other (default false)
   IRSensor(int id, int txPin, int rxPin, bool beamBreak=false, bool startState=true, unsigned long transmitDelay=10000, unsigned long responseDelay=20);
 
   /// @brief Initiate sensor monitoring, sets pin modes and attaches to the interrupt handler
@@ -66,6 +66,14 @@ public:
   /// @brief Set function to call when sensor deactivated
   /// @param callback Function to call
   void setDeactivateCallback(void (*callback)(int id));
+
+  /// @brief Get the transmitter pin number
+  /// @return Transmitter pin number
+  int getTxPin();
+
+  /// @brief Get the receiver pin number
+  /// @return Receiver pin number
+  int getRxPin();
 
 private:
   int _id;

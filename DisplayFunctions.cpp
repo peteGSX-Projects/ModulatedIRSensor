@@ -16,7 +16,7 @@
 */
 
 #include <Arduino.h>
-#include "defines.h"
+#include "Defines.h"
 #include "DisplayFunctions.h"
 #include "DeviceFunctions.h"
 #include "I2CFunctions.h"
@@ -35,6 +35,9 @@ void startupDisplay() {
   Serial.println(versionBuffer[2]);
   Serial.print(F("Available at I2C address 0x"));
   Serial.println(i2cAddress, HEX);
+  Serial.print(F("Configured for "));
+  Serial.print(SENSOR_COUNT);
+  Serial.println(F(" sensors"));
 }
 
 void displaySensors() {
@@ -64,8 +67,8 @@ void displayVpinMap() {
   for (uint8_t i=0; i<SENSOR_COUNT; i++) {
     char txName[5];
     char rxName[5];
-    int txPin=sensorConfigs[i].transmitPin;
-    int rxPin=sensorConfigs[i].receivePin;
+    int txPin=sensors[i]->getTxPin();
+    int rxPin=sensors[i]->getRxPin();
     for (uint8_t i=0; i<28; i++) {
       if (pinNames[i].pin==txPin) {
         strncpy(txName, pinNames[i].pinName, sizeof(txName)-1);

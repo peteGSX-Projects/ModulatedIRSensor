@@ -17,7 +17,7 @@
 
 #include <Arduino.h>
 #include <Wire.h>
-#include "defines.h"
+#include "Defines.h"
 #include "I2CFunctions.h"
 #include "DisplayFunctions.h"
 #include "DeviceFunctions.h"
@@ -105,7 +105,6 @@ void receiveEvent(int numBytes) {
 }
 
 void requestEvent() {
-  char noData[0];
   switch(outboundFlag) {
     case EXIOINIT:
       if(setupComplete) {

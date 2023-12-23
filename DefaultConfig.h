@@ -15,30 +15,16 @@
  *  along with this code.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <Arduino.h>
-#include "Version.h"
-#include "I2CFunctions.h"
-#include "DeviceFunctions.h"
-#include "DisplayFunctions.h"
-#include "SerialFunctions.h"
+#ifndef MYCONFIG_H
+#define MYCONFIG_H
 
-void setup() {
+#define I2C_ADDRESS 0x65
+#define DIAG_CONFIG_DELAY 5
+
 #if defined(ARDUINO_BLUEPILL_F103C8)
-  disableJTAG();
+#define SENSOR_COUNT 14
+#elif defined(ARDUINO_AVR_MEGA2560) || defined(ARDUINO_AVR_MEGA)
+#define SENSOR_COUNT 31
 #endif
-  Serial.begin(115200);
-  setVersion();
-  startupDisplay();
-  setupI2C();
-  setupSensors();
-}
 
-void loop() {
-  for (int i=0; i<SENSOR_COUNT; i++) {
-    sensors[i]->check();
-  }
-  if (diag) {
-    displaySensors();
-  }
-  processSerialInput();
-}
+#endif
