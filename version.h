@@ -18,8 +18,9 @@
 #ifndef VERSION_H
 #define VERSION_H
 
-#define VERSION "0.0.2"
+#define VERSION "0.0.3"
 
+// 0.0.3  - Add Arduino Mega
 // 0.0.2  - Add EX-IOExpander protocol for EX-CommandStation integration
 // 0.0.1  - Initial class complete ready for some practical testing
 
