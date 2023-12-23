@@ -18,6 +18,15 @@
 #ifndef DEFINES_H
 #define DEFINES_H
 
+#include "IRSensor.h"
+
+#if __has_include ("MyConfig.h")
+  #include "MyConfig.h"
+#else
+  #warning MyConfig.h not found. Using defaults from DefaultConfig.h
+  #include "DefaultConfig.h"
+#endif
+
 #ifndef SENSOR_COUNT
 #if defined(ARDUINO_BLUEPILL_F103C8)
 #define SENSOR_COUNT 14
@@ -46,5 +55,17 @@
 #define EXIOPINS 0xE9     // Flag we need to send pin counts
 #define EXIOWRAN 0xEA     // Flag we're receiving an analogue write (PWM)
 #define EXIOERR 0xEF      // Flag something has errored to send to device driver
+
+struct SensorConfig {
+  int transmitPin;
+  int receivePin;
+  bool beamBreak;
+  bool startState;
+};
+
+struct PinNameMap {
+  int pin;
+  const char* pinName;
+};
 
 #endif

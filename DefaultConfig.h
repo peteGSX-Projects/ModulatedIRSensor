@@ -15,39 +15,16 @@
  *  along with this code.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef DEVICEFUNCTIONS_H
-#define DEVICEFUNCTIONS_H
+#ifndef MYCONFIG_H
+#define MYCONFIG_H
 
-#include <Arduino.h>
-// #include "IRSensor.h"
-#include "Defines.h"
-
-// struct SensorConfig {
-//   int transmitPin;
-//   int receivePin;
-//   bool beamBreak;
-//   bool startState;
-// };
-
-// struct PinNameMap {
-//   int pin;
-//   const char* pinName;
-// };
-
-extern SensorConfig sensorConfigs[SENSOR_COUNT];
-extern IRSensor* sensors[SENSOR_COUNT];
-extern byte sensorStates[(SENSOR_COUNT/8)+1];
-extern PinNameMap pinNames[28];
-extern uint8_t versionBuffer[3];
-extern bool diag;
+#define I2C_ADDRESS 0x65
+#define DIAG_CONFIG_DELAY 5
 
 #if defined(ARDUINO_BLUEPILL_F103C8)
-void disableJTAG();
+#define SENSOR_COUNT 14
+#elif defined(ARDUINO_AVR_MEGA2560) || defined(ARDUINO_AVR_MEGA)
+#define SENSOR_COUNT 62
 #endif
-void setupSensors();
-void sensorActivated(int id);
-void sensorDeactivated(int id);
-void setVersion();
-void reset();
 
 #endif

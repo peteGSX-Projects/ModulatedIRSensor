@@ -27,7 +27,7 @@
 #define IRSENSOR_H
 
 #include <Arduino.h>
-#include "defines.h"
+#include "Defines.h"
 
 class IRSensor {
 public:

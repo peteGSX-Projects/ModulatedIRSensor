@@ -16,7 +16,7 @@
 */
 
 #include <Arduino.h>
-#include "defines.h"
+#include "Defines.h"
 #include "DisplayFunctions.h"
 #include "DeviceFunctions.h"
 #include "I2CFunctions.h"

@@ -18,26 +18,38 @@
 #include <Arduino.h>
 #include "version.h"
 #include "DeviceFunctions.h"
+#include "IRSensor.h"
 
-/// @brief Configuration of the IR sensors in this format:
-///        {transmitPin, receivePin, beamBreak}
-///        Set beamBreak to true if the transmitter and receiver are facing each other in a beam break configuration
-SensorConfig sensorConfigs[SENSOR_COUNT]={
-  {PC13,PC14,false,true},
-  {PC15,PA0,false,false},
-  {PA1,PA2,false,true},
-  {PA3,PA4,false,false},
-  {PA5,PA6,false,true},
-  {PA7,PB0,false,false},
-  {PB1,PB10,false,true},
-  {PB11,PB9,false,false},
-  {PB8,PB5,false,true},
-  {PB4,PB3,false,false},
-  {PA15,PA10,false,true},
-  {PA9,PA8,false,false},
-  {PB15,PB14,false,true},
-  {PB13,PB12,false,false},
-};
+#if defined(ARDUINO_BLUEPILL_F103C8)
+#if __has_include ("MyBluepill.h")
+  #include "MyBluepill.h"
+#else
+  #warning MyBluepill.h not found. Using defaults from DefaultBluepill.h
+  #include "DefaultBluepill.h"
+#endif
+#elif defined(ARDUINO_AVR_MEGA2560) || defined(ARDUINO_AVR_MEGA)
+
+#endif
+
+// /// @brief Configuration of the IR sensors in this format:
+// ///        {transmitPin, receivePin, beamBreak}
+// ///        Set beamBreak to true if the transmitter and receiver are facing each other in a beam break configuration
+// SensorConfig sensorConfigs[SENSOR_COUNT]={
+//   {PC13,PC14,false,true},
+//   {PC15,PA0,false,false},
+//   {PA1,PA2,false,true},
+//   {PA3,PA4,false,false},
+//   {PA5,PA6,false,true},
+//   {PA7,PB0,false,false},
+//   {PB1,PB10,false,true},
+//   {PB11,PB9,false,false},
+//   {PB8,PB5,false,true},
+//   {PB4,PB3,false,false},
+//   {PA15,PA10,false,true},
+//   {PA9,PA8,false,false},
+//   {PB15,PB14,false,true},
+//   {PB13,PB12,false,false},
+// };
 
 PinNameMap pinNames[28] = {
   {PC13,"PC13"},{PC14,"PC14"},{PC15,"PC15"},{PA0,"PA0"},{PA1,"PA1"},{PA2,"PA2"},{PA3,"PA3"},{PA4,"PA4"},
