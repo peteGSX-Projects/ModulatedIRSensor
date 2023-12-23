@@ -41,7 +41,9 @@ extern PinNameMap pinNames[28];
 extern uint8_t versionBuffer[3];
 extern bool diag;
 
+#if defined(ARDUINO_BLUEPILL_F103C8)
 void disableJTAG();
+#endif
 void setupSensors();
 void sensorActivated(int id);
 void sensorDeactivated(int id);

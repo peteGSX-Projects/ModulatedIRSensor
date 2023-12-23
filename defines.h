@@ -19,7 +19,11 @@
 #define DEFINES_H
 
 #ifndef SENSOR_COUNT
+#if defined(ARDUINO_BLUEPILL_F103C8)
 #define SENSOR_COUNT 14
+#elif defined(ARDUINO_AVR_MEGA2560) || defined(ARDUINO_AVR_MEGA)
+#define SENSOR_COUNT 62
+#endif
 #endif
 
 #ifndef I2C_ADDRESS

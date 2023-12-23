@@ -105,7 +105,6 @@ void receiveEvent(int numBytes) {
 }
 
 void requestEvent() {
-  char noData[0];
   switch(outboundFlag) {
     case EXIOINIT:
       if(setupComplete) {

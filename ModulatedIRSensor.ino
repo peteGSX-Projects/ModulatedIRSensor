@@ -23,7 +23,9 @@
 #include "SerialFunctions.h"
 
 void setup() {
+#if defined(ARDUINO_BLUEPILL_F103C8)
   disableJTAG();
+#endif
   Serial.begin(115200);
   setVersion();
   startupDisplay();

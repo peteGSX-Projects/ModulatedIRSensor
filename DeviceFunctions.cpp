@@ -46,6 +46,13 @@ PinNameMap pinNames[28] = {
   {PA10,"PA10"},{PA9,"PA9"},{PA8,"PA8"},{PB15,"PB15"},{PB14,"PB14"},{PB13,"PB13"},{PB12,"PB12"},
 };
 
+IRSensor* sensors[SENSOR_COUNT];
+byte sensorStates[(SENSOR_COUNT/8)+1];
+char* version;
+uint8_t versionBuffer[3];
+bool diag=false;
+
+#if defined(ARDUINO_BLUEPILL_F103C8)
 void disableJTAG() {
   // Disable JTAG and enable SWD by clearing the SWJ_CFG bits
   // Assuming the register is named AFIO_MAPR or AFIO_MAPR2
@@ -53,12 +60,7 @@ void disableJTAG() {
   // or
   // AFIO->MAPR2 &= ~(AFIO_MAPR2_SWJ_CFG);
 }
-
-IRSensor* sensors[SENSOR_COUNT];
-byte sensorStates[(SENSOR_COUNT/8)+1];
-char* version;
-uint8_t versionBuffer[3];
-bool diag=false;
+#endif
 
 void setupSensors() {
   for (int i=0; i<SENSOR_COUNT; i++) {
@@ -100,7 +102,12 @@ void setVersion() {
 }
 
 void reset() {
+#if defined(ARDUINO_BLUEPILL_F103C8)
   __disable_irq();
   NVIC_SystemReset();
   while(true) {};
+#elif defined(ARDUINO_AVR_MEGA2560) || defined(ARDUINO_AVR_MEGA)
+  wdt_enable(WDTO_15MS);
+  delay(50);
+#endif
 }
