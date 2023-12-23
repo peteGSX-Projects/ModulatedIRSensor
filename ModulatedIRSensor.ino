@@ -16,7 +16,7 @@
 */
 
 #include <Arduino.h>
-#include "version.h"
+#include "Version.h"
 #include "I2CFunctions.h"
 #include "DeviceFunctions.h"
 #include "DisplayFunctions.h"

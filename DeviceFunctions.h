@@ -19,25 +19,12 @@
 #define DEVICEFUNCTIONS_H
 
 #include <Arduino.h>
-// #include "IRSensor.h"
 #include "Defines.h"
-
-// struct SensorConfig {
-//   int transmitPin;
-//   int receivePin;
-//   bool beamBreak;
-//   bool startState;
-// };
-
-// struct PinNameMap {
-//   int pin;
-//   const char* pinName;
-// };
 
 extern SensorConfig sensorConfigs[SENSOR_COUNT];
 extern IRSensor* sensors[SENSOR_COUNT];
 extern byte sensorStates[(SENSOR_COUNT/8)+1];
-extern PinNameMap pinNames[28];
+extern PinNameMap pinNames[TOTAL_PINS];
 extern uint8_t versionBuffer[3];
 extern bool diag;
 

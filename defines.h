@@ -43,6 +43,12 @@
 #define DIAG_CONFIG_DELAY 5
 #endif
 
+#if defined(ARDUINO_BLUEPILL_F103C8)
+#define TOTAL_PINS 28
+#elif defined(ARDUINO_AVR_MEGA2560) || defined(ARDUINO_AVR_MEGA)
+#define TOTAL_PINS 62
+#endif
+
 #define EXIOINIT 0xE0     // Flag to start setup procedure
 #define EXIORDY 0xE1      // Flag setup procedure done, return to CS to ACK
 #define EXIODPUP 0xE2     // Flag we're receiving digital pin pullup configuration
@@ -61,6 +67,11 @@ struct SensorConfig {
   int receivePin;
   bool beamBreak;
   bool startState;
+  unsigned long txDelay;
+  unsigned long rxDelay;
+
+  SensorConfig(int txPin, int rxPin, bool beamBreak=false, bool startState=true, unsigned long txDelay=10000, unsigned long rxDelay=20)
+  : transmitPin(txPin), receivePin(rxPin), beamBreak(beamBreak), startState(startState), txDelay(txDelay), rxDelay(rxDelay) {}
 };
 
 struct PinNameMap {

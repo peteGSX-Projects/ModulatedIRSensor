@@ -18,6 +18,7 @@
 #ifndef MYBLUEPILL_H
 #define MYBLUEPILL_H
 
+#include <Arduino.h>
 #include "DeviceFunctions.h"
 
 /// @brief Configuration of the IR sensors in this format:
