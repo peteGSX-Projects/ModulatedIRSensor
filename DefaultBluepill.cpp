@@ -15,15 +15,13 @@
  *  along with this code.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef MYBLUEPILL_H
-#define MYBLUEPILL_H
-
 #include <Arduino.h>
 #include "DeviceFunctions.h"
 
 /// @brief Configuration of the IR sensors in this format:
 ///        {transmitPin, receivePin, beamBreak}
 ///        Set beamBreak to true if the transmitter and receiver are facing each other in a beam break configuration
+#if defined(ARDUINO_BLUEPILL_F103C8) && !__has_include("MySensors.h")
 IRSensor* sensors[SENSOR_COUNT]={
   new IRSensor(0,PC13,PC14,false,true),
   new IRSensor(1,PC15,PA0,false,false),
@@ -40,5 +38,4 @@ IRSensor* sensors[SENSOR_COUNT]={
   new IRSensor(12,PB15,PB14,false,true),
   new IRSensor(13,PB13,PB12,false,false),
 };
-
 #endif

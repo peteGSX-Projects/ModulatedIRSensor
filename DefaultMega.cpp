@@ -15,15 +15,13 @@
  *  along with this code.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef MYMEGA_H
-#define MYMEGA_H
-
 #include <Arduino.h>
 #include "DeviceFunctions.h"
 
 /// @brief Configuration of the IR sensors in this format:
 ///        {transmitPin, receivePin, beamBreak}
 ///        Set beamBreak to true if the transmitter and receiver are facing each other in a beam break configuration
+#if (defined(ARDUINO_AVR_MEGA2560) || defined(ARDUINO_AVR_MEGA)) && !__has_include("MySensors.h")
 IRSensor* sensors[SENSOR_COUNT]={
   new IRSensor(0,2,3,false,true,10000,100),
   new IRSensor(1,4,5,false,false,10000,100),
@@ -57,5 +55,4 @@ IRSensor* sensors[SENSOR_COUNT]={
   new IRSensor(29,A12,A13,false,false,10000,100),
   new IRSensor(30,A14,A15,false,true,10000,100),
 };
-
 #endif

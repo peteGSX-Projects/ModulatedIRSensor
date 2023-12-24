@@ -27,6 +27,12 @@
   #include "DefaultConfig.h"
 #endif
 
+#if __has_include("MySensors.h")
+  #include "MySensors.h"
+#else
+  #warning MySensors.h not found. Using default sensor configuration
+#endif
+
 #ifndef SENSOR_COUNT
 #if defined(ARDUINO_BLUEPILL_F103C8)
 #define SENSOR_COUNT 14

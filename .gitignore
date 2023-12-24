@@ -8,5 +8,5 @@ Release/*
 .vscode/
 
 MyConfig.h
-MyBluepill.h
-MyMega.h
+MySensors.h
+MySensors.cpp
