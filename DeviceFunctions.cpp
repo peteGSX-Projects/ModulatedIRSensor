@@ -21,22 +21,6 @@
 #include "IRSensor.h"
 
 #if defined(ARDUINO_BLUEPILL_F103C8)
-#if __has_include ("MyBluepill.h")
-  #include "MyBluepill.h"
-#else
-  #warning MyBluepill.h not found. Using defaults from DefaultBluepill.h
-  #include "DefaultBluepill.h"
-#endif
-#elif defined(ARDUINO_AVR_MEGA2560) || defined(ARDUINO_AVR_MEGA)
-#if __has_include ("MyMega.h")
-  #include "MyMega.h"
-#else
-  #warning MyMega.h not found. Using defaults from DefaultMega.h
-  #include "DefaultMega.h"
-#endif
-#endif
-
-#if defined(ARDUINO_BLUEPILL_F103C8)
 PinNameMap pinNames[TOTAL_PINS] = {
   {PC13,"PC13"},{PC14,"PC14"},{PC15,"PC15"},{PA0,"PA0"},{PA1,"PA1"},{PA2,"PA2"},{PA3,"PA3"},{PA4,"PA4"},
   {PA5,"PA5"},{PA6,"PA6"},{PA7,"PA7"},{PB0,"PB0"},{PB1,"PB1"},{PB10,"PB10"},{PB11,"PB11"},

@@ -21,10 +21,4 @@
 #define I2C_ADDRESS 0x65
 #define DIAG_CONFIG_DELAY 5
 
-#if defined(ARDUINO_BLUEPILL_F103C8)
-#define SENSOR_COUNT 14
-#elif defined(ARDUINO_AVR_MEGA2560) || defined(ARDUINO_AVR_MEGA)
-#define SENSOR_COUNT 31
-#endif
-
 #endif
