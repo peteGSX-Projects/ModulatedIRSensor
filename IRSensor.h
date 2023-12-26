@@ -35,13 +35,17 @@ public:
   /// @param transmitPin Pin for the IR transmitter
   /// @param receivePin Pin for the IR phototransistor
   /// @param beamBreak Set to true when transmitter/phototransistor face each other (default false)
-  IRSensor(int id, int txPin, int rxPin, bool beamBreak=false, bool startState=true, unsigned long transmitDelay=10000, unsigned long responseDelay=20);
+  IRSensor(int txPin, int rxPin, bool startState=true, bool activeHigh=false, bool beamBreak=false, unsigned long transmitDelay=10000, unsigned long responseDelay=20);
 
   /// @brief Initiate sensor monitoring, sets pin modes and attaches to the interrupt handler
   void begin();
 
   /// @brief Routinely check each sensor pair to see if they have been activated
   void check();
+
+  /// @brief Get this sensor's ID
+  /// @return ID
+  int getId();
 
   /// @brief Get current state of the transmit pin
   /// @return true/false
@@ -50,6 +54,10 @@ public:
   /// @brief Get current state of the receive pin
   /// @return true/false
   bool getRxState();
+
+  /// @brief Get whether the sensor is active high
+  /// @return true/false
+  bool getActiveHigh();
 
   /// @brief Get whether it's configured for beam break mode or not
   /// @return true/false
@@ -79,8 +87,9 @@ private:
   int _id;
   int _txPin;
   int _rxPin;
-  bool _beamBreak;
   bool _txState;
+  bool _activeHigh;
+  bool _beamBreak;
   unsigned long _txDelay;
   unsigned long _rxDelay;
   bool _activated;
@@ -92,6 +101,8 @@ private:
   bool _rxState;
   void (*_activationCallback)(int id);
   void (*_deactivationCallback)(int id);
+
+  static int _nextId;
 
 };
 
