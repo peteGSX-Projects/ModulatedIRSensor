@@ -23,19 +23,19 @@
 ///        Set beamBreak to true if the transmitter and receiver are facing each other in a beam break configuration
 #if defined(ARDUINO_BLUEPILL_F103C8) && !__has_include("MySensors.h")
 IRSensor* sensors[SENSOR_COUNT]={
-  new IRSensor(0,PC13,PC14,false,true),
-  new IRSensor(1,PC15,PA0,false,false),
-  new IRSensor(2,PA1,PA2,false,true),
-  new IRSensor(3,PA3,PA4,false,false),
-  new IRSensor(4,PA5,PA6,false,true),
-  new IRSensor(5,PA7,PB0,false,false),
-  new IRSensor(6,PB1,PB10,false,true),
-  new IRSensor(7,PB11,PB9,false,false),
-  new IRSensor(8,PB8,PB5,false,true),
-  new IRSensor(9,PB4,PB3,false,false),
-  new IRSensor(10,PA15,PA10,false,true),
-  new IRSensor(11,PA9,PA8,false,false),
-  new IRSensor(12,PB15,PB14,false,true),
-  new IRSensor(13,PB13,PB12,false,false),
+  new IRSensor(PC13,PC14,true),
+  new IRSensor(PC15,PA0,false),
+  new IRSensor(PA1,PA2,true),
+  new IRSensor(PA3,PA4,false),
+  new IRSensor(PA5,PA6,true),
+  new IRSensor(PA7,PB0,false),
+  new IRSensor(PB1,PB10,true),
+  new IRSensor(PB11,PB9,false),
+  new IRSensor(PB8,PB5,true),
+  new IRSensor(PB4,PB3,false),
+  new IRSensor(PA15,PA10,true),
+  new IRSensor(PA9,PA8,false),
+  new IRSensor(PB15,PB14,true),
+  new IRSensor(PB13,PB12,false),
 };
 #endif

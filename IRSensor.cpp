@@ -20,8 +20,9 @@
 
 // IRSensor class public methods
 
-IRSensor::IRSensor(int id, int txPin, int rxPin, bool beamBreak, bool startState, unsigned long transmitDelay, unsigned long responseDelay)
-: _id(id), _txPin(txPin), _rxPin(rxPin), _beamBreak(beamBreak), _txState(startState), _txDelay(transmitDelay), _rxDelay(transmitDelay+responseDelay) {
+IRSensor::IRSensor(int txPin, int rxPin, bool startState, bool beamBreak, bool activeHigh, unsigned long transmitDelay, unsigned long responseDelay)
+: _txPin(txPin), _rxPin(rxPin), _txState(startState), _beamBreak(beamBreak), _activeHigh(activeHigh), _txDelay(transmitDelay), _rxDelay(transmitDelay+responseDelay) {
+  _id=_nextId++;
   _activated=false;
   _lastTxTime=0;
   _lastRxTime=0;
@@ -37,20 +38,31 @@ void IRSensor::begin() {
   digitalWrite(_txPin, _txState);
 }
 
+/// @brief Modulate the transmitter high/low and compare the receiver state
 void IRSensor::check() {
   unsigned long currentMicros=micros();
 
+  // Alternate trasmit pin at the specified rate
   if (currentMicros-_lastTxTime>_txDelay) {
     _lastTxTime=currentMicros;
     _txState=!_txState;
     digitalWrite(_txPin, _txState);
   }
   
+  // Check the receive pin state after the specified delay
   if (currentMicros-_lastRxTime>_rxDelay) {
     _lastRxTime=currentMicros;
+    // Get receiver state and invert if sensor is active high
     _rxState=digitalRead(_rxPin);
-    bool isActive=(_beamBreak) ? _rxState : !_rxState;
-    _window[_windowIndex]=(isActive==_txState);
+    bool rxState=(_activeHigh) ? _rxState : !_rxState;
+    if (_beamBreak) {
+      // In beam break mode, if Tx is high and Rx matches, it's receiving, therefore not activated
+      // If Tx is high and Rx doesn't match, active
+      _window[_windowIndex]=(_txState&&rxState!=_txState) || (!_txState);
+    } else {
+      // In reflection mode, true if Rx is the same as Tx
+      _window[_windowIndex]=(rxState==_txState);
+    }
     _windowIndex=(_windowIndex+1)%_windowSize;
   }
 
@@ -72,12 +84,20 @@ void IRSensor::check() {
   }
 }
 
+int IRSensor::getId() {
+  return _id;
+}
+
 bool IRSensor::getTxState() {
   return _txState;
 }
 
 bool IRSensor::getRxState() {
   return _rxState;
+}
+
+bool IRSensor::getActiveHigh() {
+  return _activeHigh;
 }
 
 bool IRSensor::getBeamBreak() {
@@ -105,3 +125,5 @@ int IRSensor::getRxPin() {
 }
 
 // IRSensor class private methods
+
+int IRSensor::_nextId=0;
