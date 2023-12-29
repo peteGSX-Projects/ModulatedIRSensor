@@ -18,8 +18,9 @@
 #ifndef VERSION_H
 #define VERSION_H
 
-#define VERSION "0.0.5"
+#define VERSION "0.0.6"
 
+// 0.0.6  - Fix DefaultMega.cpp to alternate start state
 // 0.0.5  - Clean up class with auto increment ID
 //        - Add flag for active high vs. active low sensors
 //        - Fix logic to cater correctly for beam break mode
