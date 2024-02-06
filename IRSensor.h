@@ -1,5 +1,6 @@
 /*
  *  © 2023 Peter Cole
+ *  © 2024 Peter Cole
  *
  *  This is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -35,7 +36,7 @@ public:
   /// @param transmitPin Pin for the IR transmitter
   /// @param receivePin Pin for the IR phototransistor
   /// @param beamBreak Set to true when transmitter/phototransistor face each other (default false)
-  IRSensor(int txPin, int rxPin, bool startState=true, bool beamBreak=false, bool activeHigh=false, unsigned long transmitDelay=10000, unsigned long responseDelay=20);
+  IRSensor(int txPin, int rxPin, bool startState=true, bool beamBreak=false, bool activeHigh=false, unsigned long transmitDelay=20000, unsigned long responseDelay=20);
 
   /// @brief Initiate sensor monitoring, sets pin modes and attaches to the interrupt handler
   void begin();
